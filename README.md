@@ -8,3 +8,4 @@ The GAP8 of the AI-Deck and the FPGA of the Lighthouse-Deck share the same UART1
 
 Overview of the scheme taken from [blog post](https://www.bitcraze.io/2020/06/ai-deck-is-available-in-early-access/)
 
+In order for the data transmission to work, the NINA and the Gap8 firmware must be rewritten, the new send functions must be integrated in the Gap8-program and then the new firmware with the appllication must be flashed on the GAP8 and the NINA-chip.
