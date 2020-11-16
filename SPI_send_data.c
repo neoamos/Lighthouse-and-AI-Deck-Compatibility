@@ -9,27 +9,25 @@
  */
 
 #include "pmsis.h"
-#include "SPI_gap8_to_nina.h"
+#include "SPI_send_data.h"
 #include "stdio.h"
 
-static void send_char_SPI(void)
+static void send_data_SPI(PI_L2 void data)
 // how to give data to the function ?
 {
     // configuration of the SPI parameters
     struct pi_spi_conf spi_config;  
 
+    // Define buffer size of data to be sent
+    // What Data Type ? L2_MEM ?
+    static const int BUFFER_SIZE = 2048;
+
     // Nina-Wifi-Chip as receiving device
     // How does the program know, if it is the nina ? 
     struct pi_device nina; 
-    
-    // Character that will be sent to NINA as a test
-    // PI_L2 means that it will be saved in the L2-buffer of the GAP8 before being sent
-    static PI_L2 char letter = 'a';
 
     // Default SPI-configuration for all parameters
     pi_spi_conf_init(&spi_config);  
-
-    // size_t data_size = length(data); // Data size in bit 
 
     // Set the SPI-output of the GAP8 as an output explicitely
     pi_gpio_pin_configure(&nina, PI_GPIO_A13_PAD_27_A38, PI_GPIO_OUTPUT);
@@ -45,25 +43,22 @@ static void send_char_SPI(void)
         pmsis_exit(-1);
     }
 
-    pi_spi_open(&nina); 
+    pi_spi_open(&nina_chip); 
     
     // Send data via SPI
     while(1)
     {
-        pi_spi_send(&nina, &letter, 8, 0);
-
-    // TODO: confirmation of received data needed ?
-    // Use functions from SPI Slave Docu in ESP32 Docu
+        pi_spi_send(&nina, &letter, BUFFER_SIZE, 0);
     }
     printf("SPI transfer completed !\n");
 
     // Close SPI-Device (NINA) to free allocated resources
-    if (pi_spi_close(&nina))
+    if (pi_spi_close(&nina_chip))
     {
         printf("[SPI] close failed !\n");
         pmsis_exit(-1);
     }
-
+    
     pi_spi_close(&nina_chip)
 
     // Stop function & exit platform
@@ -73,5 +68,5 @@ static void send_char_SPI(void)
 int main(void)
 {
     // Start pmsis system on Gap8 with SPI-send function to be executed
-    return pmsis_kickoff((void *)send_char_SPI);
+    return pmsis_kickoff((void *)send_data_SPI);
 }
