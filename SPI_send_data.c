@@ -37,29 +37,29 @@ static void send_data_SPI(PI_L2 void data)
     printf("[SPI] Open\n");
     
     // Open SPI to start transfer
-    if (pi_spi_open(&nina_chip))
+    if (pi_spi_open(&nina))
     {
         printf("[SPI] open failed !\n");
         pmsis_exit(-1);
     }
 
-    pi_spi_open(&nina_chip); 
+    pi_spi_open(&nina); 
     
     // Send data via SPI
     while(1)
     {
-        pi_spi_send(&nina, &letter, BUFFER_SIZE, 0);
+        pi_spi_send(&nina, &data, BUFFER_SIZE, 0);
     }
     printf("SPI transfer completed !\n");
 
     // Close SPI-Device (NINA) to free allocated resources
-    if (pi_spi_close(&nina_chip))
+    if (pi_spi_close(&nina))
     {
         printf("[SPI] close failed !\n");
         pmsis_exit(-1);
     }
     
-    pi_spi_close(&nina_chip)
+    pi_spi_close(&nina)
 
     // Stop function & exit platform
     pmsis_exit(0);

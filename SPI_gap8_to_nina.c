@@ -39,7 +39,7 @@ static void send_char_SPI(void)
     printf("[SPI] Open\n");
     
     // Open SPI to start transfer
-    if (pi_spi_open(&nina_chip))
+    if (pi_spi_open(&nina))
     {
         printf("[SPI] open failed !\n");
         pmsis_exit(-1);
@@ -64,7 +64,7 @@ static void send_char_SPI(void)
         pmsis_exit(-1);
     }
 
-    pi_spi_close(&nina_chip)
+    pi_spi_close(&nina)
 
     // Stop function & exit platform
     pmsis_exit(0);
