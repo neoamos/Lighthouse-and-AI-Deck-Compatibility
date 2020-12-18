@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # AI-deck examples repository
 
 ## New Communication structure
