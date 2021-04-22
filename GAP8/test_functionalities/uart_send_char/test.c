@@ -63,9 +63,9 @@ static void test_gap8(void)
   }
 
   pi_uart_open(&device);
-  value = 0xff;
+  value = 'a';
 
-  while(1)
+  for(int i = 0; i < 10; i++)
   {
     // toggle LED when sending information
     pi_gpio_pin_write(&gpio_device, 2, led_val);

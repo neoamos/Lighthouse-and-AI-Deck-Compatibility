@@ -21,7 +21,7 @@
 #ifndef __SPI_H__
 #define __SPI_H__
 
-#define CMD_PACKET_SIZE 8
+#define CMD_PACKET_SIZE 16384
 
 /* Initialize the SPI */
 void spi_init();

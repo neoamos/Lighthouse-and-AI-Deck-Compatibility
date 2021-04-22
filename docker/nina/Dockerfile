@@ -28,4 +28,6 @@ RUN tar -xzf openocd-esp32-linux64-0.10.0-esp32-20190313.tar.gz
 
 RUN apt-get -y install make libtool pkg-config autoconf automake texinfo libusb-1.0
 
+RUN sed -i "s/^adapter_khz.*/adapter_khz 10000/" /openocd-esp32/share/openocd/scripts/board/esp-wroom-32.cfg
+
 WORKDIR /module
