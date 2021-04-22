@@ -6,3 +6,4 @@ NINA/firmware/sdkconfig*
 GAP8/**/BUILD/*
 
 .vscode
+crazyflie_app/bin
