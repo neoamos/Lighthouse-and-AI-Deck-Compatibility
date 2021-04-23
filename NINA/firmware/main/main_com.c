@@ -70,7 +70,7 @@ void uart_init(void) {
     ESP_ERROR_CHECK(uart_param_config(uart_num, &uart_config));
 
     ESP_ERROR_CHECK(uart_set_pin(uart_num, TXD_PIN, RXD_PIN, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE));
-    uart_set_sw_flow_ctrl(uart_num, true, 8, UART_FIFO_LEN - 8)
+    uart_set_sw_flow_ctrl(uart_num, true, 8, UART_FIFO_LEN - 8);
 
     QueueHandle_t uart_queue;
     ESP_ERROR_CHECK(uart_driver_install(uart_num, RX_BUF_SIZE * 2, TX_BUF_SIZE * 2, 10, &uart_queue, 0));
@@ -115,13 +115,11 @@ static void data_sending_task(void) {
     while (1) {
         int32_t datalength = spi_read_data(&spi_buffer, CMD_PACKET_SIZE);
         if (datalength > 0) {
-            req = (nina_req_t *)spi_buffer;
-
             // msg_len = sprintf(msg_buffer, "Received req: type: %X, size: %i\n", req->type, req->size);
             // uart_write_bytes(uart_num, (const char*)msg_buffer, msg_len);
             handle_gap8_package(spi_buffer);
         }
-        vTaskDelay(pdMS_TO_TICKS(10));
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
 
