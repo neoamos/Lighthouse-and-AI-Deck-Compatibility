@@ -42,7 +42,7 @@
 #include "deck.h"
 #include "system.h"
 
-#define DEBUG_MODULE "HELLOWORLD"
+#define DEBUG_MODULE "UART_TEST"
 
 static uint8_t byte;
 
@@ -71,4 +71,14 @@ void appMain()
           vTaskDelay(pdMS_TO_TICKS(10));
       }
   }
+
+  /* Sample code for sending data to AI deck over UART1
+   * Need to initialize UART1 instead of UART2
+   */
+  // char* data = "d";
+  // while(1){
+  //   DEBUG_PRINT("Sending character\n");
+  //   uart1SendData(1, (uint8_t*)data);
+  //   vTaskDelay(pdMS_TO_TICKS(1000));
+  // }
 }

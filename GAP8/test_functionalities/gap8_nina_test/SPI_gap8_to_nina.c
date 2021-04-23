@@ -111,7 +111,7 @@ static void send_char_SPI(void){
 static void send_char_transport(void){
     // configure LED
     pi_gpio_pin_configure(&gpio_device, 2, PI_GPIO_OUTPUT);
-    static PI_L2 char *data = "data string\n";
+    static PI_L2 char *data = "data from ai deck\n";
 
     if (open_transport(&nina))
     {
