@@ -47,7 +47,7 @@ static void test_gap8(void)
   struct pi_uart_conf conf;
   struct pi_device device;
   pi_uart_conf_init(&conf);
-  conf.baudrate_bps =115200;
+  conf.baudrate_bps =230400;
   conf.enable_tx = 0;
   conf.enable_rx = 1;
 

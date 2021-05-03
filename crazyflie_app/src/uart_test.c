@@ -37,48 +37,37 @@
 #include "task.h"
 
 #include "debug.h"
-#include "uart1.h"
-#include "uart2.h"
 #include "deck.h"
 #include "system.h"
+#include "ai_deck_interface.h"
 
 #define DEBUG_MODULE "UART_TEST"
 
-static uint8_t byte;
+static int messages_recieved = 0;
+static int bytes_received = 0;
+static uint32_t hop_count = 0;
+long tick_start, tick_end;
+
+void on_message(uint8_t* msg, int len){
+  tick_end = xTaskGetTickCount();
+  messages_recieved += 1;
+  bytes_received += len;
+  hop_count = *((uint32_t*)msg);
+  DEBUG_PRINT("Hop count: %u, RTT: %ims\n", (unsigned int)hop_count, (int)T2M(tick_end-tick_start));
+  vTaskDelay(pdMS_TO_TICKS(500));
+  hop_count++;
+  tick_start = xTaskGetTickCount();
+  ai_deck_send((uint8_t*)&hop_count, 4);
+}
 
 void appMain()
 {
   DEBUG_PRINT("Starting UART test app\n");
 
-  uart2Init(115200);
+  ai_deck_interface_init(on_message);
 
-  systemWaitStart();
-  vTaskDelay(M2T(1000));
-
-  // Pull the reset button to get a clean read out of the data
-  pinMode(DECK_GPIO_IO4, OUTPUT);
-  digitalWrite(DECK_GPIO_IO4, LOW);
-  vTaskDelay(10);
-  digitalWrite(DECK_GPIO_IO4, HIGH);
-  pinMode(DECK_GPIO_IO4, INPUT_PULLUP);
-
-  // Read out the byte the NINA sends and immediately send it to the console.
-  while (1)
-  {
-      if (uart2GetDataWithDefaultTimeout(&byte))
-      {   
-          DEBUG_PRINT("%c", (unsigned int)byte);
-          vTaskDelay(pdMS_TO_TICKS(10));
-      }
+  while(1){
+    vTaskDelay(pdMS_TO_TICKS(1000));
+    // DEBUG_PRINT("RX bytes: %i, RX msgs: %i from AI deck\n", bytes_received, messages_recieved);
   }
-
-  /* Sample code for sending data to AI deck over UART1
-   * Need to initialize UART1 instead of UART2
-   */
-  // char* data = "d";
-  // while(1){
-  //   DEBUG_PRINT("Sending character\n");
-  //   uart1SendData(1, (uint8_t*)data);
-  //   vTaskDelay(pdMS_TO_TICKS(1000));
-  // }
 }
