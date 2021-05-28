@@ -62,7 +62,7 @@ void on_message(uint8_t* msg, int len){
 
 void appMain()
 {
-  DEBUG_PRINT("Starting UART test app\n");
+  DEBUG_PRINT("Starting UART test app ping pong\n");
 
   ai_deck_interface_init(on_message);
 

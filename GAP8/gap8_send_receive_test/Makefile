@@ -1,5 +1,5 @@
-APP = SPI_gap8_to_nina
-APP_SRCS += SPI_gap8_to_nina.c cf_interface.c
+APP = gap8_send_receive
+APP_SRCS += gap8_send_receive.c cf_interface.c
 
 APP_CFLAGS += -O3 -g -Werror
 

@@ -9,27 +9,12 @@
  */
 
 #include "pmsis.h"
-#include "SPI_gap8_to_nina.h"
+#include "gap8_send_receive.h"
 #include "bsp/transport/nina_w10.h"
 #include "stdio.h"
 #include "cf_interface.h"
 
-static pi_task_t led_task;
-static pi_task_t block_task;
-static int led_val = 0;
-
-static struct pi_device gpio_device;
-
-static PI_L2 char *data = "aaaaaaaaaa";
-
 static uint32_t hop_count = 0;
-
-static void led_handle(void *arg)
-{
-  pi_gpio_pin_write(&gpio_device, 2, led_val);
-  led_val ^= 1;
-  pi_task_push_delayed_us(pi_task_callback(&led_task, led_handle, NULL), 500000);
-}
 
 void on_message(uint8_t *msg, int len){
   hop_count = *((uint32_t*)msg);
@@ -39,32 +24,20 @@ void on_message(uint8_t *msg, int len){
 }
 
 /* 
- * This uses a transport layer over SPI to send multiple bytes at a time
- * instead of sending one byte at time with bare SPI functions
- * like in the previous appraoch
+ * This initiates a ping-pong communication.
+ * The message is a 4 byte integer that is increamented with each ping
  */
-static void send_char_transport(void){
-    // configure LED
-    pi_gpio_pin_configure(&gpio_device, 2, PI_GPIO_OUTPUT);
+static void send_receive_test(void){
 
     cf_interface_init(on_message);
 
     pi_time_wait_us(1000000);
     cf_send((uint8_t*)&hop_count, 4);
 
-    // Send data via transport over SPI to nina
     while(1)
     {
-        // toggle LED when sending information
-        // pi_gpio_pin_write(&gpio_device, 2, led_val);
-        // led_val ^= 1;
-        // pi_task_push_delayed_us(pi_task_callback(&led_task, led_handle, NULL), 500000);
-
-        // cf_send(data, strlen(data));
-        // printf("data sent\n");
         pi_time_wait_us(1000000);
     }
-    printf("SPI transfer completed !\n");
 
     // Stop function & exit platform
     pmsis_exit(0);
@@ -73,5 +46,5 @@ static void send_char_transport(void){
 
 int main(void){
     // Start pmsis system on Gap8 with SPI-send function to be executed
-    return pmsis_kickoff((void *)send_char_transport);
+    return pmsis_kickoff((void *)send_receive_test);
 }

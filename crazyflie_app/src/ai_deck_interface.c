@@ -41,7 +41,7 @@ void receiving_task(void *pvParameters)
     while(1){
       byte = 0;
       if (uart2GetDataWithDefaultTimeout(&byte)){ 
-        // Whait for an SOH character
+        // Wait for an SOH character
         if(byte == 0x81){
           // First four bytes is the data length
           uart_read_bytes((uint8_t*) (&data_len), 4);
@@ -56,13 +56,6 @@ void receiving_task(void *pvParameters)
     }
 
     vTaskDelete(NULL);
-}
-
-void send_bytes(int len, uint8_t *buffer){
-  for(int i = 0; i< len; i++){
-    uart1Putchar(buffer[i]);
-    // vTaskDelay(pdMS_TO_TICKS(100));
-  }
 }
 
 void ai_deck_send(uint8_t *buffer, int len){
@@ -81,7 +74,7 @@ void ai_deck_interface_init( void (*callback) (uint8_t*, int) ){
   uart2Init(115200);
 
   if(!uart1Test()){
-    uart1Init(230400);
+    uart1Init(230400); //Use 230400 because this is what the lighthouse uses
   }
 
   systemWaitStart();

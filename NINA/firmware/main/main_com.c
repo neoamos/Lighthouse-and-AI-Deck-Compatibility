@@ -27,8 +27,8 @@
 #define RX_BUF_SIZE 1024    //Buffer Size?
 #define TX_BUF_SIZE 1024    //Buffer Size?
 
-#define TXD_PIN (GPIO_NUM_22)            //Correct GPIO?
-#define RXD_PIN (GPIO_NUM_23)            //Correct GPIO?
+#define TXD_PIN (GPIO_NUM_22)
+#define RXD_PIN (GPIO_NUM_23)
 
 #define uart_num UART_NUM_0
 
