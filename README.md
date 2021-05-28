@@ -6,7 +6,7 @@
 Both the Lighthouse and AI-Deck are connected to the Crazyflie over UART1, so they will interfere with each other.
 
 This repository provides the ability for the Gap8 to send messages to the Crazyflie over the path `Gap8-[SPI]->NINA-[UART2]->Crazyflie` and for the Crazyflie to send messages to the Gap8 over the path `Crazyflie-[UART1]->Gap8` while the lighthouse is operating.  
-The only caveat is that the lighthouse informational LED needs to be disabled if you want to send messages from the Crazyflie to the Gap8 because the Crazyflie uses UART1 tx to control the lighthouse LED.  The provided firmware has disabled this functionality.  A better solution might be to send messages from the Crazyflie to the Gap8 over the NINA as well, but the SPI functions are currently only implemented in one direction (see [this issue](https://github.com/GreenWaves-Technologies/gap_sdk/issues/223) for more information).
+The only caveat is that the lighthouse informational LED needs to be disabled if you want to send messages from the Crazyflie to the Gap8 because the Crazyflie uses UART1 tx to control the lighthouse LED.  A better solution might be to send messages from the Crazyflie to the Gap8 over the NINA as well, but the SPI functions are currently only implemented in one direction (see [this issue](https://github.com/GreenWaves-Technologies/gap_sdk/issues/223) for more information).
 
 In the long run, the lighthouse will be on the I2C interface, so it will be compatible with the AI deck.
 
